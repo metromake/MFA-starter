@@ -74,7 +74,7 @@ const verifyTwoFA = async (
       window: 1,
     });
 
-    if (!isValid) return next(new CustomError('Invalid 2FA code', 400));
+    if (isValid === null) return next(new CustomError('Invalid 2FA code', 400));
     const options: RequestInit = {
       method: 'POST',
       headers: {
@@ -87,7 +87,7 @@ const verifyTwoFA = async (
       options,
     );
     if (!userResponse) return next(new CustomError('User not found', 404));
-    // TODO: Create and return a JWT token
+
     const tokenContent: TokenContent = {
       user_id: userResponse.user_id,
       level_name: userResponse.level_name,
